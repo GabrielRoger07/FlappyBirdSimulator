@@ -31,17 +31,51 @@ function ParDeBarreiras(altura, abertura, x){
         this.inferior.setAltura(alturaInferior)
     }
 
-    this.getX = () => {
-        parseInt(this.elemento.style.left.split('px')[0])
-    }
-    this.setX = () => {
-        this.elemento.style.left = `${x}px`
-    }
+    this.getX = () => parseInt(this.elemento.style.left.split('px')[0])
+    
+    this.setX = valor => this.elemento.style.left = `${valor}px`
+    
     this.getLargura = () => this.elemento.clientWidth
 
     this.sortearAbertura()
     this.setX(x)
 }
 
-const b = new ParDeBarreiras(500, 200, 400)
-document.querySelector('[wm-flappy]').appendChild(b.elemento)
+//Função para geração de barreiras seguidas
+function Barreiras(altura, largura, abertura, espacoEntreBarreiras, notificarPonto){
+    this.pares = [
+        new ParDeBarreiras(altura, abertura, largura),
+        new ParDeBarreiras(altura, abertura, largura + espacoEntreBarreiras),
+        new ParDeBarreiras(altura, abertura, largura + espacoEntreBarreiras * 2),
+        new ParDeBarreiras(altura, abertura, largura + espacoEntreBarreiras * 3)
+    ]
+
+    //Quantidade de pixels no deslocamento das barreiras
+    const deslocamento = 3
+    this.animar = () => {
+        this.pares.forEach(par => {
+            par.setX(par.getX() - deslocamento)
+
+            //Quando a barreira sair da tela do jogo
+            if(par.getX() < -par.getLargura()){
+                console.log('Entrou aqui')
+                par.setX(par.getX() + espacoEntreBarreiras * this.pares.length)
+                par.sortearAbertura()
+            }
+
+            const meio = largura / 2
+            const cruzouOMeio = par.getX() + deslocamento >= meio 
+                && par.getX() < meio
+            if(cruzouOMeio){
+                notificarPonto()
+            }
+        })
+    }
+}
+
+const barreiras = new Barreiras(500, 1200, 200, 400)
+const areaDoJogo = document.querySelector('[wm-flappy]')
+barreiras.pares.forEach(par => areaDoJogo.appendChild(par.elemento))
+setInterval(() => {
+    barreiras.animar()
+}, 20)
