@@ -8,4 +8,5 @@ Para executar o jogo, é necessário abrir o arquivo flappy.html no navegador ut
 
 ## Como jogar
 Pressionar alguma tecla irá aumentar a altura de voo do pássaro, enquanto não pressionar nenhuma tecla irá diminuir a altura de voo do pássaro.
-O objetivo é passar entre o maior número de barreiras possível. Caso perca, atualize a página para reiniciar o jogo.
+O objetivo é passar entre o maior número de barreiras possível. Caso perca, atualize a página para reiniciar o jogo. </br></br>
+![Imagem Jogo](imgs/ImagemJogo.png)
